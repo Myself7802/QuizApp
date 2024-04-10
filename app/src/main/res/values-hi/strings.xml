@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Quizapp</string>
+    <string name="welcome">स्वागत है</string>
+    <string name="start_message">जब आप तैयार हो तो शुरू करें</string>
+    <string name="user_name_hint">नाम</string>
+    <string name="start_button">शुरू</string>
+    <string name="submit_button">प्रस्तुत</string>
+</resources>

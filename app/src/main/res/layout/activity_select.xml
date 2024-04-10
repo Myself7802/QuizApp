@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    tools:context=".activities.SelectActivity">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Dental \n Quiz"
+        android:textSize="@dimen/_25sdp"
+        />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_40sdp"
+        >
+
+        <Button
+            android:id="@+id/kids"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Kids"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="@dimen/_50sdp"
+            android:textSize="@dimen/_15sdp"/>
+
+        <Button
+            android:id="@+id/adult"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Adult"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="@dimen/_50sdp"
+            android:textSize="@dimen/_15sdp"/>
+
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/admin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Admin"
+        android:textSize="@dimen/_15sdp"/>
+
+</LinearLayout>
