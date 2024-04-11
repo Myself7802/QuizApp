@@ -26,6 +26,8 @@ object Constants {
 
     var ADMIN_PASSWORD = "paapt"
 
+    var TIMER :Long = 25000
+
 
     fun byteArrayToBitmap(byteArray: ByteArray): Bitmap {
         return BitmapFactory.decodeByteArray(byteArray, 0, byteArray.size)
