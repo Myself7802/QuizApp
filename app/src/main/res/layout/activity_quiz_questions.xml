@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#e5f8e5"
     android:fillViewport="true"
     tools:context=".activities.QuizQuestionsActivity">
 
@@ -13,6 +14,7 @@
         android:gravity="center"
         android:orientation="vertical"
         android:padding="16dp"
+
         >
 
         <LinearLayout
@@ -20,6 +22,8 @@
             android:layout_height="@dimen/_60sdp"
             android:layout_margin="5dp"
             android:gravity="center"
+            android:layout_marginStart="@dimen/_50sdp"
+            android:layout_marginEnd="@dimen/_50sdp"
             android:orientation="horizontal">
 
 
@@ -50,7 +54,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:fontFamily="@font/roboto"
+                android:fontFamily="@font/droid_bold"
                 android:gravity="center"
                 android:layout_gravity="center"
                 android:visibility="visible"
@@ -85,6 +89,8 @@
                 android:progress="0">
             </ProgressBar>
 
+
+
             <TextView
                 android:id="@+id/tv_progress"
                 android:layout_width="wrap_content"
@@ -96,16 +102,38 @@
                 tools:text="0/10">
             </TextView>
 
-            <TextView
-                android:id="@+id/tv_timer"
+            <FrameLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:padding="15dp"
-                android:textColorHint="#7A8089"
-                android:textSize="14sp"
-                tools:text="0/10">
-            </TextView>
+                android:layout_height="wrap_content">
+
+                <com.mikhaellopez.circularprogressbar.CircularProgressBar
+                    android:id="@+id/circularProgressBar"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    app:cpb_background_progressbar_color="#b6bbd8"
+                    app:cpb_background_progressbar_width="5dp"
+                    app:cpb_progress_direction="to_right"
+                    app:cpb_progressbar_color="#3f51b5"
+                    app:cpb_progressbar_width="10dp"
+                    app:cpb_round_border="false" />
+
+
+                <TextView
+                    android:id="@+id/tv_timer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:layout_gravity="center"
+                    android:padding="15dp"
+                    android:textColorHint="#7A8089"
+                    android:fontFamily="@font/droid_medium"
+                    android:textSize="18sp"
+                    tools:text="24">
+                </TextView>
+
+            </FrameLayout>
+
+
 
         </LinearLayout>
 
@@ -134,11 +162,14 @@
                         android:gravity="center"
                         android:layout_marginStart="@dimen/_5sdp"
                         android:textColor="@color/black"
+                        android:visibility="gone"
                         android:textSize="@dimen/_16sdp"/>
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:layout_marginStart="@dimen/_50sdp"
+                        android:layout_marginEnd="@dimen/_50sdp"
                         android:gravity="center">
 
                         <androidx.cardview.widget.CardView
@@ -169,11 +200,11 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_margin="10dp"
-                            android:fontFamily="@font/roboto"
+                            android:fontFamily="@font/droid_italic"
                             android:layout_gravity="center"
                             android:gravity="center"
                             android:padding="15dp"
-                            android:textColor="#7A8089"
+                            android:textColor="@color/black"
                             android:textSize="18sp"
                             tools:text="Apple">
                         </TextView>
@@ -203,11 +234,14 @@
                         android:gravity="center"
                         android:layout_marginStart="@dimen/_5sdp"
                         android:textColor="@color/black"
+                        android:visibility="gone"
                         android:textSize="@dimen/_16sdp"/>
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:layout_marginStart="@dimen/_50sdp"
+                        android:layout_marginEnd="@dimen/_50sdp"
                         android:gravity="center">
 
                         <androidx.cardview.widget.CardView
@@ -236,11 +270,11 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_margin="10dp"
-                            android:fontFamily="@font/roboto"
+                            android:fontFamily="@font/droid_italic"
                             android:layout_gravity="center"
                             android:gravity="center"
                             android:padding="15dp"
-                            android:textColor="#7A8089"
+                            android:textColor="@color/black"
                             android:textSize="18sp"
                             tools:text="Apple">
                         </TextView>
@@ -271,11 +305,14 @@
                         android:gravity="center"
                         android:layout_marginStart="@dimen/_5sdp"
                         android:textColor="@color/black"
+                        android:visibility="gone"
                         android:textSize="@dimen/_16sdp"/>
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:layout_marginStart="@dimen/_50sdp"
+                        android:layout_marginEnd="@dimen/_50sdp"
                         android:gravity="center">
 
                         <androidx.cardview.widget.CardView
@@ -304,11 +341,11 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_margin="10dp"
-                            android:fontFamily="@font/roboto"
+                            android:fontFamily="@font/droid_italic"
                             android:layout_gravity="center"
                             android:gravity="center"
                             android:padding="15dp"
-                            android:textColor="#7A8089"
+                            android:textColor="@color/black"
                             android:textSize="18sp"
                             tools:text="Apple">
                         </TextView>
@@ -335,11 +372,14 @@
                         android:gravity="center"
                         android:layout_marginStart="@dimen/_5sdp"
                         android:textColor="@color/black"
+                        android:visibility="gone"
                         android:textSize="@dimen/_16sdp"/>
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:layout_marginStart="@dimen/_50sdp"
+                        android:layout_marginEnd="@dimen/_50sdp"
                         android:gravity="center">
 
 
@@ -369,11 +409,11 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_margin="10dp"
-                            android:fontFamily="@font/roboto"
+                            android:fontFamily="@font/droid_italic"
                             android:layout_gravity="center"
                             android:gravity="center"
                             android:padding="15dp"
-                            android:textColor="#7A8089"
+                            android:textColor="@color/black"
                             android:textSize="18sp"
                             tools:text="Apple">
                         </TextView>
@@ -395,10 +435,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:background="@color/colorPrimary"
-            android:fontFamily="@font/roboto_bold"
             android:text="@string/submit_button"
             android:textColor="@android:color/white"
+            android:backgroundTint="#3ca23c"
+            android:fontFamily="@font/droid_bold_italic"
             android:textSize="18sp"
             android:textStyle="bold">
         </Button>

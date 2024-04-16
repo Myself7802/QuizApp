@@ -7,12 +7,14 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center"
+    android:background="#e5f8e5"
     tools:context=".activities.SelectActivity">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Dental \n Quiz"
+        android:fontFamily="@font/melody_break_demo"
         android:textSize="@dimen/_25sdp"
         />
 
@@ -29,6 +31,8 @@
             android:text="Kids"
             android:layout_alignParentStart="true"
             android:layout_marginStart="@dimen/_50sdp"
+            android:backgroundTint="#3ca23c"
+            android:fontFamily="@font/droid_bold_italic"
             android:textSize="@dimen/_15sdp"/>
 
         <Button
@@ -38,15 +42,19 @@
             android:text="Adult"
             android:layout_alignParentEnd="true"
             android:layout_marginEnd="@dimen/_50sdp"
+            android:backgroundTint="#3ca23c"
+            android:fontFamily="@font/droid_bold_italic"
             android:textSize="@dimen/_15sdp"/>
 
     </RelativeLayout>
 
-    <Button
+    <TextView
         android:id="@+id/admin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Admin"
+        android:text="@string/admin"
+        android:backgroundTint="#3ca23c"
+        android:fontFamily="@font/droid_bold_italic"
         android:textSize="@dimen/_15sdp"/>
 
 </LinearLayout>

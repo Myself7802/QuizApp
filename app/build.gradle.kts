@@ -70,6 +70,7 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2")
     implementation("androidx.lifecycle:lifecycle-viewmodel:2.6.2")
     implementation("com.google.android.material:material:1.3.0-alpha03’")
+    implementation("com.mikhaellopez:circularprogressbar:3.1.0")
 
 
 }

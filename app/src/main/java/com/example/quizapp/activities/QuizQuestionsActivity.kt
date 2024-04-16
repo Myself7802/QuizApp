@@ -7,6 +7,7 @@ import android.graphics.Typeface
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.os.Handler
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -20,6 +21,8 @@ import com.example.quizapp.databinding.ActivityQuizQuestionsBinding
 import com.example.quizapp.helpers.Constants.TIMER
 import com.example.quizapp.viewmodel.QuestionVideModelFactory
 import com.example.quizapp.viewmodel.QuestionViewModel
+import com.mikhaellopez.circularprogressbar.CircularProgressBar
+import kotlin.random.Random
 
 class QuizQuestionsActivity : AppCompatActivity(), View.OnClickListener {
 
@@ -30,13 +33,16 @@ class QuizQuestionsActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var viewModel: QuestionViewModel
     private lateinit var countDownTimer: CountDownTimer
     private var timeLeftInMillis: Long = TIMER // 25 seconds
-
+    var correctAnswerIndex = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityQuizQuestionsBinding.inflate(layoutInflater)
         viewModel = ViewModelProvider(this, QuestionVideModelFactory())[QuestionViewModel::class.java]
-        mQuestionList = viewModel.getQuestions()
+        val list = viewModel.getQuestions()
+        val mutableQuestionList = list.toMutableList()
+        mutableQuestionList.shuffle(Random)
+        mQuestionList = mutableQuestionList.toList()
         setContentView(binding.root)
 //        mQuestionList = Constants.getQuestions()
 
@@ -48,34 +54,25 @@ class QuizQuestionsActivity : AppCompatActivity(), View.OnClickListener {
 
             override fun onFinish() {
                 // Move to the next question
-                if (mSelectedOptionPosition == 0) {
-                    mCurrentPosition++
-                    val intent = if (mCurrentPosition <= mQuestionList!!.size) {
-                        setQuestion()
-                        null
-                    } else {
-                        Toast.makeText(
-                            this@QuizQuestionsActivity,
-                            "You have successfully completed the Quiz", Toast.LENGTH_SHORT
-                        ).show()
-                        Intent(this@QuizQuestionsActivity, MainActivity::class.java)
-                    }
+//                answerView(correctAnswerIndex, R.drawable.correct_option_border_bg)
 
-                    intent?.let { startActivity(it) }
-
+                mCurrentPosition++
+                val intent = if (mCurrentPosition <= mQuestionList!!.size) {
+                    Handler().postDelayed({ setQuestion() }, 100)
+                    null
                 } else {
-                    val question = mQuestionList?.get(mCurrentPosition - 1)
-                    if (question!!.correctOption != mSelectedOptionPosition) {
-                        answerView(mSelectedOptionPosition, R.drawable.wrong_option_border_bg)
-                    }
-                    answerView(question.correctOption, R.drawable.correct_option_border_bg)
-                    if (mCurrentPosition == mQuestionList!!.size) {
-                        binding.btnSubmit.text = "Finish"
-                    } else {
-                        binding.btnSubmit.text = "Go to next question"
-                    }
-                    mSelectedOptionPosition = 0
+                    Toast.makeText(
+                        this@QuizQuestionsActivity,
+                        "You have successfully completed the Quiz", Toast.LENGTH_SHORT
+                    ).show()
+                    Intent(this@QuizQuestionsActivity, MainActivity::class.java)
                 }
+
+                intent?.let {
+                    startActivity(it)
+                    finish()
+                }
+
             }
         }
 
@@ -92,6 +89,39 @@ class QuizQuestionsActivity : AppCompatActivity(), View.OnClickListener {
         binding.dLayout.setOnClickListener(this)
         binding.btnSubmit.setOnClickListener(this)
 
+        val circularProgressBar = findViewById<CircularProgressBar>(R.id.circularProgressBar)
+        circularProgressBar.apply {
+            // Set Progress
+            progress = 25f
+            // or with animation
+            setProgressWithAnimation(65f, 1000) // =1s
+
+            // Set Progress Max
+            progressMax = 25f
+
+            // Set ProgressBar Color
+            progressBarColor = Color.BLACK
+            // or with gradient
+            progressBarColorStart = Color.GRAY
+            progressBarColorEnd = Color.RED
+            progressBarColorDirection = CircularProgressBar.GradientDirection.TOP_TO_BOTTOM
+
+            // Set background ProgressBar Color
+            backgroundProgressBarColor = Color.GRAY
+            // or with gradient
+            backgroundProgressBarColorStart = Color.WHITE
+            backgroundProgressBarColorEnd = Color.GREEN
+            backgroundProgressBarColorDirection = CircularProgressBar.GradientDirection.TOP_TO_BOTTOM
+
+            // Set Width
+            progressBarWidth = 7f // in DP
+            backgroundProgressBarWidth = 3f // in DP
+
+            // Other
+            roundBorder = true
+            startAngle = 180f
+            progressDirection = CircularProgressBar.ProgressDirection.TO_RIGHT
+        }
 
     }
 
@@ -99,18 +129,18 @@ class QuizQuestionsActivity : AppCompatActivity(), View.OnClickListener {
     private fun setQuestion() {
 
         val question = mQuestionList!!.get(mCurrentPosition - 1)
-
         updateUI(question.type)
 
         defaultOptionsView()
         if (mCurrentPosition == mQuestionList!!.size) {
             binding.btnSubmit.text = "Finish"
         } else {
-            binding.btnSubmit.text = "Submit"
+            binding.btnSubmit.text = "Go to next question"
         }
 
         binding.progressBar.progress = mCurrentPosition
         binding.tvProgress.text = "$mCurrentPosition" + "/" + mQuestionList!!.size
+
 
         binding.tvQuestion.text = question.question
         binding.questionImageview.setImageBitmap(question.questionImage?.let {
@@ -119,39 +149,286 @@ class QuizQuestionsActivity : AppCompatActivity(), View.OnClickListener {
             )
         })
 
-        binding.tvOptionOne.text = question.optionOne
-        binding.tvOptionTwo.text = question.optionTwo
-        binding.tvOptionThree.text = question.optionThree
-        binding.tvOptionFour.text = question.optionFour
+//        binding.tvOptionOne.text = question.optionOne
+//        binding.tvOptionTwo.text = question.optionTwo
+//        binding.tvOptionThree.text = question.optionThree
+//        binding.tvOptionFour.text = question.optionFour
 
-        binding.option1Imageview.setImageBitmap(question.optionOneImage?.let {
-            Constants.byteArrayToBitmap(
-                it
-            )
-        })
-        binding.option2Imageview.setImageBitmap(question.optionTwoImage?.let {
-            Constants.byteArrayToBitmap(
-                it
-            )
-        })
+        if (question.type == Constants.TEXT){
 
-        binding.option3Imageview.setImageBitmap(question.optionThreeImage?.let {
-            Constants.byteArrayToBitmap(
-                it
+            val options = mutableListOf(
+                question.optionOne,
+                question.optionTwo,
+                question.optionThree,
+                question.optionFour
             )
-        })
-        binding.option4Imageview.setImageBitmap(question.optionFourImage?.let {
-            Constants.byteArrayToBitmap(
-                it
+
+// Shuffle the options
+            options.shuffle()
+            correctAnswerIndex = when (question.correctOption) {
+                1 -> options.indexOf(question.optionOne)
+                2 -> options.indexOf(question.optionTwo)
+                3 -> options.indexOf(question.optionThree)
+                4 -> options.indexOf(question.optionFour)
+                else -> -1 // Handle the case when correctOption is not in the range 1-4
+            }
+
+
+
+// Set shuffled options to UI
+            binding.tvOptionOne.text = options[0]
+            binding.tvOptionTwo.text = options[1]
+            binding.tvOptionThree.text = options[2]
+            binding.tvOptionFour.text = options[3]
+
+// Attach click listeners to each option
+            binding.aLayout.setOnClickListener {
+                checkAnswer(0, correctAnswerIndex)
+            }
+            binding.bLayout.setOnClickListener {
+                checkAnswer(1, correctAnswerIndex)
+            }
+            binding.cd0.setOnClickListener {
+                checkAnswer(2, correctAnswerIndex)
+            }
+            binding.dLayout.setOnClickListener {
+                checkAnswer(3, correctAnswerIndex)
+            }
+
+        } else if (question.type == Constants.IMAGE){
+
+            val optionsImage = mutableListOf(
+                question.optionOneImage,
+                question.optionTwoImage,
+                question.optionThreeImage,
+                question.optionFourImage
             )
-        })
+
+            optionsImage.shuffle()
+            correctAnswerIndex = when (question.correctOption) {
+                1 -> optionsImage.indexOf(question.optionOneImage)
+                2 -> optionsImage.indexOf(question.optionTwoImage)
+                3 -> optionsImage.indexOf(question.optionThreeImage)
+                4 -> optionsImage.indexOf(question.optionFourImage)
+                else -> -1 // Handle the case when correctOption is not in the range 1-4
+            }
+
+            binding.option1Imageview.setImageBitmap(optionsImage[0]?.let {
+                Constants.byteArrayToBitmap(
+                    it
+                )
+            })
+            binding.option2Imageview.setImageBitmap(optionsImage[1]?.let {
+                Constants.byteArrayToBitmap(
+                    it
+                )
+            })
+
+            binding.option3Imageview.setImageBitmap(optionsImage[2]?.let {
+                Constants.byteArrayToBitmap(
+                    it
+                )
+            })
+            binding.option4Imageview.setImageBitmap(optionsImage[3]?.let {
+                Constants.byteArrayToBitmap(
+                    it
+                )
+            })
+
+            // Attach click listeners to each option
+            binding.aLayout.setOnClickListener {
+                checkAnswer(0, correctAnswerIndex)
+            }
+            binding.bLayout.setOnClickListener {
+                checkAnswer(1, correctAnswerIndex)
+            }
+            binding.cd0.setOnClickListener {
+                checkAnswer(2, correctAnswerIndex)
+            }
+            binding.dLayout.setOnClickListener {
+                checkAnswer(3, correctAnswerIndex)
+            }
+
+        } else {
+
+            val options = mutableListOf(
+                question.optionOne,
+                question.optionTwo,
+                question.optionThree,
+                question.optionFour
+            )
+
+// Shuffle the indices of options list
+            val shuffledIndices = options.indices.shuffled()
+
+            // Set shuffled options to UI
+            binding.tvOptionOne.text = options[0]
+            binding.tvOptionTwo.text = options[1]
+            binding.tvOptionThree.text = options[2]
+            binding.tvOptionFour.text = options[3]
+
+
+// Reorder elements in options list
+            options.indices.forEach { index ->
+                options[index] = options[shuffledIndices[index]]
+            }
+
+// Apply the same shuffle to optionsImage list
+            val optionsImage = mutableListOf(
+                question.optionOneImage,
+                question.optionTwoImage,
+                question.optionThreeImage,
+                question.optionFourImage
+            )
+
+
+
+// Reorder elements in optionsImage list using shuffled indices
+            val shuffledOptionsImage = shuffledIndices.map { optionsImage[it] }
+            optionsImage.clear()
+            optionsImage.addAll(shuffledOptionsImage)
+
+            correctAnswerIndex = when (question.correctOption) {
+                1 -> options.indexOf(question.optionOne)
+                2 -> options.indexOf(question.optionTwo)
+                3 -> options.indexOf(question.optionThree)
+                4 -> options.indexOf(question.optionFour)
+                else -> -1 // Handle the case when correctOption is not in the range 1-4
+            }
+
+            binding.option1Imageview.setImageBitmap(optionsImage[0]?.let {
+                Constants.byteArrayToBitmap(
+                    it
+                )
+            })
+            binding.option2Imageview.setImageBitmap(optionsImage[1]?.let {
+                Constants.byteArrayToBitmap(
+                    it
+                )
+            })
+
+            binding.option3Imageview.setImageBitmap(optionsImage[2]?.let {
+                Constants.byteArrayToBitmap(
+                    it
+                )
+            })
+            binding.option4Imageview.setImageBitmap(optionsImage[3]?.let {
+                Constants.byteArrayToBitmap(
+                    it
+                )
+            })
+
+// Attach click listeners to each option
+            binding.aLayout.setOnClickListener {
+                checkAnswer(0, correctAnswerIndex)
+            }
+            binding.bLayout.setOnClickListener {
+                checkAnswer(1, correctAnswerIndex)
+            }
+            binding.cd0.setOnClickListener {
+                checkAnswer(2, correctAnswerIndex)
+            }
+            binding.dLayout.setOnClickListener {
+                checkAnswer(3, correctAnswerIndex)
+            }
+
+        }
+
+//        val options = mutableListOf(
+//            question.optionOne,
+//            question.optionTwo,
+//            question.optionThree,
+//            question.optionFour
+//        )
+//
+//// Shuffle the options
+//        options.shuffle()
+//        correctAnswerIndex = when (question.correctOption) {
+//            1 -> options.indexOf(question.optionOne)
+//            2 -> options.indexOf(question.optionTwo)
+//            3 -> options.indexOf(question.optionThree)
+//            4 -> options.indexOf(question.optionFour)
+//            else -> -1 // Handle the case when correctOption is not in the range 1-4
+//        }
+//
+//
+//
+//// Set shuffled options to UI
+//        binding.tvOptionOne.text = options[0]
+//        binding.tvOptionTwo.text = options[1]
+//        binding.tvOptionThree.text = options[2]
+//        binding.tvOptionFour.text = options[3]
+//
+//// Attach click listeners to each option
+//        binding.aLayout.setOnClickListener {
+//            checkAnswer(0, correctAnswerIndex)
+//        }
+//        binding.bLayout.setOnClickListener {
+//            checkAnswer(1, correctAnswerIndex)
+//        }
+//        binding.cd0.setOnClickListener {
+//            checkAnswer(2, correctAnswerIndex)
+//        }
+//        binding.dLayout.setOnClickListener {
+//            checkAnswer(3, correctAnswerIndex)
+//        }
+//
+//        val optionsImage = mutableListOf(
+//            question.optionOneImage,
+//            question.optionTwoImage,
+//            question.optionThreeImage,
+//            question.optionFourImage
+//        )
+//
+//        optionsImage.shuffle()
+//        correctAnswerIndex = when (question.correctOption) {
+//            1 -> optionsImage.indexOf(question.optionOneImage)
+//            2 -> optionsImage.indexOf(question.optionTwoImage)
+//            3 -> optionsImage.indexOf(question.optionThreeImage)
+//            4 -> optionsImage.indexOf(question.optionFourImage)
+//            else -> -1 // Handle the case when correctOption is not in the range 1-4
+//        }
+//
+//        binding.option1Imageview.setImageBitmap(optionsImage[0]?.let {
+//            Constants.byteArrayToBitmap(
+//                it
+//            )
+//        })
+//        binding.option2Imageview.setImageBitmap(optionsImage[1]?.let {
+//            Constants.byteArrayToBitmap(
+//                it
+//            )
+//        })
+//
+//        binding.option3Imageview.setImageBitmap(optionsImage[2]?.let {
+//            Constants.byteArrayToBitmap(
+//                it
+//            )
+//        })
+//        binding.option4Imageview.setImageBitmap(optionsImage[3]?.let {
+//            Constants.byteArrayToBitmap(
+//                it
+//            )
+//        })
 
         countDownTimer.cancel()
-        timeLeftInMillis = 25000
+        timeLeftInMillis = TIMER
         countDownTimer.start()
 
     }
 
+    // Function to check the answer
+    private fun checkAnswer(selectedIndex: Int, correctAnswerIndex: Int) {
+        if (selectedIndex == correctAnswerIndex) {
+            // Correct answer
+            answerView(selectedIndex + 1, R.drawable.correct_option_border_bg) // Add 1 to convert back to 1-based index
+        } else {
+            // Incorrect answer
+            answerView(selectedIndex + 1, R.drawable.wrong_option_border_bg) // Add 1 to convert back to 1-based index
+            // Highlight the correct answer
+            answerView(correctAnswerIndex + 1, R.drawable.correct_option_border_bg) // Add 1 to convert back to 1-based index
+        }
+    }
     private fun updateUI(type: String) {
         if (type == Constants.TEXT){
             binding.tvQuestion.visibility = View.VISIBLE
@@ -221,16 +498,16 @@ class QuizQuestionsActivity : AppCompatActivity(), View.OnClickListener {
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.aLayout -> {
-                selectedOptionView(binding.aLayout, 1)
+                checkAnswer(0, correctAnswerIndex)
             }
             R.id.bLayout -> {
-                selectedOptionView(binding.bLayout, 2)
+                checkAnswer(1, correctAnswerIndex)
             }
             R.id.cLayout -> {
-                selectedOptionView(binding.cLayout, 3)
+                checkAnswer(2, correctAnswerIndex)
             }
             R.id.dLayout -> {
-                selectedOptionView(binding.dLayout, 4)
+                checkAnswer(3, correctAnswerIndex)
             }
             R.id.btn_submit -> {
                 countDownTimer.cancel()
@@ -248,11 +525,13 @@ class QuizQuestionsActivity : AppCompatActivity(), View.OnClickListener {
                             ).show()
                             val intent = Intent(this, MainActivity::class.java)
                             startActivity(intent)
+                            finish()
                         }
                     }
                 } else {
                     val question = mQuestionList?.get(mCurrentPosition - 1)
                     if (question!!.correctOption != mSelectedOptionPosition) {
+//                        checkAnswer(0, correctAnswerIndex)
                         answerView(mSelectedOptionPosition, R.drawable.wrong_option_border_bg)
                     }
                     answerView(question.correctOption, R.drawable.correct_option_border_bg)
@@ -281,7 +560,8 @@ class QuizQuestionsActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun updateCountDownText() {
         val secondsLeft = timeLeftInMillis / 1000
-        binding.tvTimer.text = "Time Left: $secondsLeft s"
+        binding.tvTimer.text = secondsLeft.toString()
+        binding.circularProgressBar.progress = secondsLeft.toFloat()
     }
 
     private fun answerView(answer: Int, drawableView: Int) {
