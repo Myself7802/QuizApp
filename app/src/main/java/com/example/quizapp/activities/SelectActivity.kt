@@ -47,8 +47,8 @@ class SelectActivity : AppCompatActivity() {
         createDialog2()
 
         binding.admin.setOnClickListener {
-            dialog2.show()
-//            showPasswordDialog()
+//            dialog2.show()
+            showPasswordDialog()
         }
 
         binding.kids.setOnClickListener {

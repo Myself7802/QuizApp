@@ -24,7 +24,7 @@ object Constants {
     var BOTH = "Both"
     var type = TEXT
 
-    var ADMIN_PASSWORD = "paapt"
+    var ADMIN_PASSWORD = "swaminarayan"
 
     var TIMER :Long = 25000
     var CORRECT :Int = 0

@@ -3,27 +3,29 @@ package com.example.quizapp.activities
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Color
-import androidx.appcompat.app.AppCompatActivity
+import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.os.Handler
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
-import com.example.quizapp.helpers.Constants
-import com.example.quizapp.models.Question
 import com.example.quizapp.R
 import com.example.quizapp.databinding.ActivityQuizQuestionsBinding
+import com.example.quizapp.helpers.Constants
 import com.example.quizapp.helpers.Constants.CORRECT
 import com.example.quizapp.helpers.Constants.LANGUAGE
 import com.example.quizapp.helpers.Constants.NUMBER_OF_QUESTION
 import com.example.quizapp.helpers.Constants.TIMER
+import com.example.quizapp.models.Question
 import com.example.quizapp.viewmodel.QuestionVideModelFactory
 import com.example.quizapp.viewmodel.QuestionViewModel
 import com.mikhaellopez.circularprogressbar.CircularProgressBar
 import kotlin.random.Random
+
 
 class QuizQuestionsActivity : AppCompatActivity(), View.OnClickListener {
 
@@ -33,6 +35,7 @@ class QuizQuestionsActivity : AppCompatActivity(), View.OnClickListener {
     private var mSelectedOptionPosition: Int = 0
     private lateinit var viewModel: QuestionViewModel
     private lateinit var countDownTimer: CountDownTimer
+//    private lateinit var music: MediaPlayer
     private var timeLeftInMillis: Long = TIMER // 25 seconds
     var correctAnswerIndex = -1
     var isNewQuestion = false
@@ -44,10 +47,11 @@ class QuizQuestionsActivity : AppCompatActivity(), View.OnClickListener {
         val list = viewModel.getQuestions(LANGUAGE)
         val mutableQuestionList = list.toMutableList()
         mutableQuestionList.shuffle(Random)
-        mQuestionList = mutableQuestionList.toList()
+        mQuestionList = mutableQuestionList.toList().take(25)
         NUMBER_OF_QUESTION = mQuestionList!!.size
         setContentView(binding.root)
 //        mQuestionList = Constants.getQuestions()
+//        music = MediaPlayer.create(this@QuizQuestionsActivity, R.raw.second_sound)
 
         countDownTimer = object : CountDownTimer(timeLeftInMillis, 1000) {
             override fun onTick(millisUntilFinished: Long) {
@@ -75,6 +79,8 @@ class QuizQuestionsActivity : AppCompatActivity(), View.OnClickListener {
                     startActivity(it)
                     finish()
                 }
+
+//                music.stop()
 
             }
         }
@@ -298,6 +304,11 @@ class QuizQuestionsActivity : AppCompatActivity(), View.OnClickListener {
         countDownTimer.cancel()
         timeLeftInMillis = TIMER
         countDownTimer.start()
+
+//        if (music.isPlaying){
+//            music.stop()
+//        }
+//        music.start()
 
     }
 
