@@ -27,6 +27,11 @@ object Constants {
     var ADMIN_PASSWORD = "paapt"
 
     var TIMER :Long = 25000
+    var CORRECT :Int = 0
+    var NUMBER_OF_QUESTION :Int = 0
+
+    var LANGUAGE = "KIDS_ENGLISH"
+    var ADMIN_LANGUAGE = "KIDS_ENGLISH"
 
 
     fun byteArrayToBitmap(byteArray: ByteArray): Bitmap {

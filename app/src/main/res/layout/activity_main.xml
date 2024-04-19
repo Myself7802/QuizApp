@@ -7,7 +7,7 @@
     android:background="#e5f8e5"
     android:gravity="center"
     android:orientation="vertical"
-    tools:context=".activities.MainActivity">
+    tools:context=".activities.ScoreActivity">
 
     <TextView
         android:layout_width="wrap_content"
@@ -17,11 +17,40 @@
         android:textSize="@dimen/_25sdp"
         />
 
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_30sdp"
+        >
+
+        <TextView
+            android:id="@+id/score"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="09/10"
+            android:layout_gravity="center"
+            android:fontFamily="@font/roboto_bold"
+            android:textSize="@dimen/_25sdp"
+            />
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/animationView"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/_70sdp"
+            app:lottie_rawRes="@raw/animation"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"/>
+
+
+    </FrameLayout>
+
+
+
     <Button
         android:id="@+id/btn_start"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Start"
+        android:text="Home"
         android:fontFamily="@font/droid_bold_italic"
         android:layout_margin="@dimen/_40sdp"
         android:backgroundTint="#3ca23c"

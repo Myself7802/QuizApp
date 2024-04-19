@@ -23,7 +23,7 @@
         <activity android:name=".activities.QuizQuestionsActivity" />
         <activity android:name=".activities.AdminActivity" />
         <activity
-            android:name=".activities.MainActivity"
+            android:name=".activities.ScoreActivity"
             android:exported="true" />
         <activity
             android:name=".activities.SelectActivity"

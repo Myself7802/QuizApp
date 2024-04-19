@@ -55,8 +55,8 @@ class QuestionViewModel : ViewModel() {
         }
     }
 
-    fun getQuestions(): List<Question> {
-        val questions: RealmResults<Question> = realm.query<Question>().find()
+    fun getQuestions(language: String): List<Question> {
+        val questions: RealmResults<Question> = realm.query<Question>("language == $0",language).find()
        val questionList: List<Question> = realm.copyFromRealm(questions)
 
         Log.d("QuestionData", "size: ${questionList.size}")
@@ -74,6 +74,7 @@ class QuestionViewModel : ViewModel() {
             Log.d("QuestionData", "Option Four Image: ${question.optionFourImage}")
             Log.d("QuestionData", "Correct Option: ${question.correctOption}")
             Log.d("QuestionData", "Type : ${question.type}")
+            Log.d("QuestionData", "Language : ${question.language}")
             Log.d("QuestionData", "-----------------------")
         }
 

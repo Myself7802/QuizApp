@@ -53,6 +53,7 @@ class AdminActivity : AppCompatActivity() {
             Log.d("QuestionData", "Option Four Image: ${question1.optionFourImage}")
             Log.d("QuestionData", "Correct Option: ${question1.correctOption}")
             Log.d("QuestionData", "Type : ${question1.type}")
+            Log.d("QuestionData", "Language : ${question1.language}")
             Log.d("QuestionData", "-----------------------")
 
             updateUI(question1.type)
@@ -182,6 +183,7 @@ class AdminActivity : AppCompatActivity() {
                     }
 
                     type = Constants.type
+                    language = Constants.ADMIN_LANGUAGE
                 }
 
                 if (question1!=null){
@@ -224,6 +226,7 @@ class AdminActivity : AppCompatActivity() {
                     }
 
                     type = Constants.type
+                    language = Constants.ADMIN_LANGUAGE
                 }
                 if (question1!=null){
                     viewModel.updateQuestion(question1,sampleQuestion1)
@@ -272,6 +275,7 @@ class AdminActivity : AppCompatActivity() {
                     }
 
                     type = Constants.type
+                    language = Constants.ADMIN_LANGUAGE
                 }
 
                 if (question1!=null){

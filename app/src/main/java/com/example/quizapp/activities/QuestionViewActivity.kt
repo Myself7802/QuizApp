@@ -8,6 +8,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.quizapp.adapters.QuestionAdapter
 import com.example.quizapp.databinding.ActivityQuestionViewBinding
+import com.example.quizapp.helpers.Constants
+import com.example.quizapp.helpers.Constants.ADMIN_LANGUAGE
 import com.example.quizapp.helpers.OnChangeClickListener
 import com.example.quizapp.models.Question
 import com.example.quizapp.viewmodel.QuestionVideModelFactory
@@ -18,6 +20,7 @@ class QuestionViewActivity : AppCompatActivity(),OnChangeClickListener {
     private lateinit var binding: ActivityQuestionViewBinding
     private lateinit var viewModel: QuestionViewModel
     private lateinit var adapter: QuestionAdapter
+    private lateinit var language: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,7 +47,7 @@ class QuestionViewActivity : AppCompatActivity(),OnChangeClickListener {
     }
 
     private fun refreshAdapter() {
-        val questionsList: List<Question> = viewModel.getQuestions()
+        val questionsList: List<Question> = viewModel.getQuestions(ADMIN_LANGUAGE)
 
         if (questionsList.isEmpty()){
             binding.noQuestionText.visibility = View.VISIBLE

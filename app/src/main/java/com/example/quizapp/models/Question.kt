@@ -41,6 +41,7 @@ class Question(): RealmObject,PaperParcelable {
     var optionFourImage: ByteArray? = null
     var correctOption: Int = 0
     var type: String = Constants.TEXT
+    var language: String = Constants.LANGUAGE
 
     companion object {
         @JvmField
