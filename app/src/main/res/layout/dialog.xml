@@ -1,0 +1,41 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/rounded_corner_background">
+
+    <TextView
+        android:id="@+id/englishTextView"
+        android:layout_width="@dimen/_100sdp"
+        android:gravity="center"
+        android:layout_height="wrap_content"
+        android:text="English"
+        android:textColor="#000000"
+        android:textSize="16sp"
+        android:padding="10dp"
+        android:layout_marginTop="10dp"/>
+
+    <TextView
+        android:id="@+id/gujaratiTextView"
+        android:layout_width="@dimen/_100sdp"
+        android:gravity="center"
+        android:layout_height="wrap_content"
+        android:text="ગુજરાતી"
+        android:textColor="#000000"
+        android:textSize="16sp"
+        android:padding="10dp"
+        android:layout_below="@id/englishTextView"
+        android:layout_marginTop="10dp"/>
+
+    <TextView
+        android:id="@+id/hindiTextView"
+        android:layout_width="@dimen/_100sdp"
+        android:gravity="center"
+        android:layout_height="wrap_content"
+        android:text="हिंदी"
+        android:textColor="#000000"
+        android:textSize="16sp"
+        android:padding="10dp"
+        android:layout_below="@id/gujaratiTextView"
+        android:layout_marginTop="10dp"/>
+
+</RelativeLayout>
